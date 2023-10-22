@@ -1,6 +1,10 @@
 # Importing flask module in the project is mandatory
 # An object of Flask class is our WSGI application.
 from flask import Flask
+import boto
+from boto.s3.key import Key
+AWS_ACCESS_KEY_ID = 'ABCD11EFGHIJK'
+AWS_SECRET_ACCESS_KEY = 'HUIHUGhuu898ERUGHIUHSIUHH'
 
 # Flask constructor takes the name of 
 # current module (__name__) as argument.
