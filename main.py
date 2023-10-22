@@ -16,6 +16,7 @@ app = Flask(__name__)
 @app.route('/')
 # ‘/’ URL is bound with hello_world() function.
 def hello_world():
+	print(AWS_SECRET_ACCESS_KEY)
 	return 'Hello World'
 
 # main driver function
