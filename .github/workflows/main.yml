@@ -49,7 +49,7 @@ jobs:
 
     - name: Scan Docker Image with Trivy
       run: |
-        trivy image trapp:v1
+        trivy image --severity=HIGH trapp:v1
       shell: bash
 
 
