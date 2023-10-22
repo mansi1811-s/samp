@@ -52,4 +52,18 @@ jobs:
         trivy image --severity=HIGH trapp:v1
       shell: bash
 
+    - name: Set up CodeQL
+      uses: github/codeql-action/setup@v1
+
+    - name: Build CodeQL database
+      run: |
+        codeql database create python-database --language=python --source-root path/to/your/app
+        codeql database analyze python-database your-org/your-repo
+      shell: bash
+
+    - name: Upload CodeQL results
+      uses: github/codeql-action/upload-sarif@v1
+      with:
+        sarif_file: codeql-database/results.sarif
+
 
