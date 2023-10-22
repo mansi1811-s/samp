@@ -53,12 +53,16 @@ jobs:
       shell: bash
 
     - name: Set up CodeQL
-      uses: github/codeql-action/setup@v1
+      run: |
+        wget https://github.com/github/codeql-cli-binaries/releases/download/codeql-bundle-2.5.0/codeql-bundle-linux64.tar.gz
+        tar xzf codeql-bundle-linux64.tar.gz
+        export PATH=$PATH:$PWD/codeql-bundle-2.5.0
+      shell: bash
 
     - name: Build CodeQL database
       run: |
-        codeql database create python-database --language=python --source-root path/to/your/app
-        codeql database analyze python-database your-org/your-repo
+        codeql database create python-database --language=python --source-root .
+        codeql database analyze python-database mansi1811-s/samp
       shell: bash
 
     - name: Upload CodeQL results
