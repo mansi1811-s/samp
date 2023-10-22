@@ -54,10 +54,12 @@ jobs:
 
     - name: Set up CodeQL
       run: |
-        wget https://github.com/github/codeql-cli-binaries/releases/download/codeql-bundle-2.5.0/codeql-bundle-linux64.tar.gz
-        tar xzf codeql-bundle-linux64.tar.gz
-        export PATH=$PATH:$PWD/codeql-bundle-2.5.0
+        codeqlURL=$(curl -s https://api.github.com/repos/github/codeql-cli-binaries/releases/latest | jq -r '.assets[].browser_download_url | select(contains("codeql-bundle"))')
+        curl -L -o codeql-bundle.tar.gz $codeqlURL
+        tar xzf codeql-bundle.tar.gz
+        export PATH=$PATH:$PWD/codeql-bundle-*
       shell: bash
+
 
     - name: Build CodeQL database
       run: |
