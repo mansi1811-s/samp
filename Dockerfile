@@ -1,4 +1,7 @@
-FROM python:3.8-slim
+# FROM python:3.8-slim
+
+#Vulnerable python package 
+FROM python:3.5-slim-buster
 
 WORKDIR /app
 
