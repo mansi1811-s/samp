@@ -38,15 +38,6 @@ jobs:
         trivy image --severity=HIGH trapp:v1
       shell: bash
 
-    # - name: Check Trivy Scan Results
-    #   run: |
-    #     if [ "${{ steps.scan.outputs.stdout }}" == "High Vulnerabilities found" ]; then
-    #       echo "High-severity vulnerabilities found. Failing the build."
-    #       exit 1
-    #     else
-    #       echo "No high-severity vulnerabilities found."
-    #     fi
-    #   shell: bash
 
 
 
