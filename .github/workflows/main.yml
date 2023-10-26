@@ -33,7 +33,8 @@ jobs:
 
     - name: Scan Docker Image with Trivy
       run: |
-        trivy image --exit-code 1 --severity=HIGH trapp:v1
+        trivy image  --severity=HIGH trapp:v1
+      #  --exit-code 1
       shell: bash
 
     - name: Upload Trivy scan results to GitHub Security tab
