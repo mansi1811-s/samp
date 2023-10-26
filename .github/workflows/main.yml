@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
-      fail-fast: true
+  #    fail-fast: true
       matrix:
         language: ['python']
 
@@ -33,7 +33,7 @@ jobs:
 
     - name: Scan Docker Image with Trivy
       run: |
-        trivy image --severity=HIGH trapp:v1
+        trivy image --exit-code 1 --severity=HIGH trapp:v1
       shell: bash
 
 
