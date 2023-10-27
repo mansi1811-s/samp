@@ -42,9 +42,9 @@ jobs:
         trivy image --severity=HIGH -f sarif trapp:v1 > trivy-results.sarif
       shell: bash
 
-    - name: Upload SARIF Results to Security Tab
-      uses: github/codeql-action/upload-sarif@v2
-      with:
-        sarif_file: trivy-results.sarif
+    # - name: Upload SARIF Results to Security Tab
+    #   uses: github/codeql-action/upload-sarif@v2
+    #   with:
+    #     sarif_file: trivy-results.sarif
 
 
