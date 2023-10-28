@@ -84,19 +84,19 @@ jobs:
       run: |
         trivy image --severity=HIGH -f sarif trapp:v1 > trivy-results.sarif
       shell: bash
-      
-    - name: Check vulnerability
-      run: |
-        trivy_output=$(trivy image --severity HIGH new:v1)
-        if echo "$trivy_output" | grep -q 'Total: 0'; then
-          echo 'No vulnerability found'
-        else
-          echo 'Vulnerability found'
-          exit 1
-        fi
 
     - name: Upload SARIF Report
       uses: actions/upload-artifact@v2
       with:
         name: trivy-results
         path: trivy-results.sarif
+        
+    - name: Check vulnerability
+      run: |
+        trivy_output=$(trivy image --severity HIGH trapp:v1)
+        if echo "$trivy_output" | grep -q 'Total: 0'; then
+          echo 'No vulnerability found'
+        else
+          echo 'Vulnerability found'
+          exit 1
+        fi
