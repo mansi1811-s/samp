@@ -2,9 +2,9 @@ name: Build and Scan Docker Image with Trivy
 
 on:
   push:
-    branches:
-      - main
-      - branch2
+    # branches:
+    #   - main
+    #   - branch2
   pull_request:
   workflow_dispatch:
   
