@@ -1,19 +1,62 @@
-name: Build and Scan Docker Image
+# name: Build and Scan Docker Image
+
+# on:
+#   push:
+#     branches:
+#       - main  # Change this to your main branch name
+
+# jobs:
+#   build_and_scan:
+#     runs-on: ubuntu-latest
+
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         # Override automatic language detection by changing the below list
+#         # Supported options are ['csharp', 'cpp', 'go', 'java', 'javascript', 'python']
+#         language: ['python']
+
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v2
+
+#     - name: Set up Docker
+#       uses: docker/setup-buildx-action@v3
+#       # with:
+#       #   version: 20.10.7   # Adjust the Docker version as needed
+
+#     - name: Build Docker Image
+#       run: |
+#         docker build -t trapp:v1 .
+#       # working-directory: path/to/your/app  # Set the path to your app if necessary
+
+#     - name: Set up Trivy
+#       run: |
+#         curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
+#       shell: bash
+
+#     - name: Scan Docker Image with Trivy
+#       run: |
+#         trivy image --severity=HIGH trapp:v1
+#       shell: bash
+
+name: Build and Scan Docker Image with Trivy
 
 on:
   push:
     branches:
-      - main  # Change this to your main branch name
-
+      - main
+      - branch2
+  pull_request:
+  workflow_dispatch:
+  
 jobs:
   build_and_scan:
     runs-on: ubuntu-latest
 
     strategy:
-      fail-fast: false
+  #    fail-fast: true
       matrix:
-        # Override automatic language detection by changing the below list
-        # Supported options are ['csharp', 'cpp', 'go', 'java', 'javascript', 'python']
         language: ['python']
 
     steps:
@@ -22,14 +65,11 @@ jobs:
 
     - name: Set up Docker
       uses: docker/setup-buildx-action@v3
-      # with:
-      #   version: 20.10.7   # Adjust the Docker version as needed
 
     - name: Build Docker Image
       run: |
         docker build -t trapp:v1 .
-      # working-directory: path/to/your/app  # Set the path to your app if necessary
-
+   
     - name: Set up Trivy
       run: |
         curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
@@ -37,6 +77,26 @@ jobs:
 
     - name: Scan Docker Image with Trivy
       run: |
-        trivy image --severity=HIGH trapp:v1
+        trivy image  --severity=HIGH trapp:v1
       shell: bash
+      
+    - name: Convert Trivy Results to SARIF
+      run: |
+        trivy image --severity=HIGH -f sarif trapp:v1 > trivy-results.sarif
+      shell: bash
+      
+    - name: Check vulnerability
+      run: |
+        trivy_output=$(trivy image --severity HIGH new:v1)
+        if echo "$trivy_output" | grep -q 'Total: 0'; then
+          echo 'No vulnerability found'
+        else
+          echo 'Vulnerability found'
+          exit 1
+        fi
 
+    - name: Upload SARIF Report
+      uses: actions/upload-artifact@v2
+      with:
+        name: trivy-results
+        path: trivy-results.sarif
