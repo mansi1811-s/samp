@@ -1,7 +1,7 @@
 name: Build and Scan Docker Image with Trivy
 
 on:
-  push:
+  # push:
     # branches:
     #   - main
     #   - branch2
